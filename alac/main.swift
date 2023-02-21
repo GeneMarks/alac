@@ -194,7 +194,7 @@ struct Alac: ParsableCommand {
         }
         
         // Move input file to trash
-        print("Moving input" + (revert ? "alac" : "flac") + "to trash...")
+        print("Moving input" + (revert ? " alac" : " flac") + " to trash...")
         do {
             try fileManager.trashItem(at: inputURL, resultingItemURL: nil)
         } catch {
