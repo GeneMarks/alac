@@ -27,5 +27,11 @@ Convert an artist's albums to flac from m4a(alac)
 
 `alac "~/Music/Lesley Gore/" --revert`
 
+## Notes
+Alac and Flac are both lossless formats. You can convert back and forth without worrying about loss of quality, as shown here:
+
+![spek-alac](https://user-images.githubusercontent.com/68919132/220459441-36bb3ef5-0f1b-49d8-a5db-f5ea5405f93d.png)
+![spek-flac](https://user-images.githubusercontent.com/68919132/220459443-8832a581-5280-48a8-a1d9-94d3743987e4.png)
+
 ## Credits
 - [ffmpeg](https://en.wikipedia.org/wiki/FFmpeg)
