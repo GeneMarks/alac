@@ -41,7 +41,7 @@ struct Alac: ParsableCommand {
     @Argument(help: "File or folder to process.")
     var input: String
     
-    @Option(help: "Number of jobs to run simulataneously (1 - 4).")
+    @Option(help: "Number of jobs to run simultaneously (1 - 4).")
     var threads: Int = 1
     
     @Flag(help: "Process all flacs/m4as(alacs) in folder tree.")
