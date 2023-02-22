@@ -19,13 +19,17 @@ Convert single flac file to alac:
 
 `alac "~/Music/Lesley Gore/Lesley Gore Sings Of Mixed-Up Hearts/6 - Sunshine, Lollipops And Rainbows.flac"`
 
+Convert an album to alac:
+
+`alac "~/Music/Lesley Gore/Lesley Gore Sings Of Mixed-Up Hearts"`
+
 Convert entire flac collection to alac using 4 threads:
 
 `alac "~/Music" --threads 4 --recursive`
 
 Convert an artist's albums to flac from m4a(alac)
 
-`alac "~/Music/Lesley Gore/" --revert`
+`alac "~/Music/Lesley Gore/" --recursive --revert`
 
 ## Notes
 Alac and Flac are both lossless formats. You can convert back and forth without worrying about loss of quality, as shown here:
