@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		76A34C6829A44DF9007FB644 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A34C6729A44DF9007FB644 /* main.swift */; };
 		76A34C7029A44E36007FB644 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 76A34C6F29A44E36007FB644 /* ArgumentParser */; };
+		76C8969629A703AD000FC2AE /* Tqdm in Frameworks */ = {isa = PBXBuildFile; productRef = 76C8969529A703AD000FC2AE /* Tqdm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,8 +25,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		76A34C6429A44DF9007FB644 /* alac */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = alac; path = /Volumes/T7/Development/swift/alac/build/Debug/alac; sourceTree = "<absolute>"; };
 		76A34C6729A44DF9007FB644 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		76C8969329A702F7000FC2AE /* alac */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = alac; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76C8969629A703AD000FC2AE /* Tqdm in Frameworks */,
 				76A34C7029A44E36007FB644 /* ArgumentParser in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -44,6 +46,7 @@
 			isa = PBXGroup;
 			children = (
 				76A34C6629A44DF9007FB644 /* alac */,
+				76C8969329A702F7000FC2AE /* alac */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,9 +76,10 @@
 			name = alac;
 			packageProductDependencies = (
 				76A34C6F29A44E36007FB644 /* ArgumentParser */,
+				76C8969529A703AD000FC2AE /* Tqdm */,
 			);
 			productName = alac;
-			productReference = 76A34C6429A44DF9007FB644 /* alac */;
+			productReference = 76C8969329A702F7000FC2AE /* alac */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -104,6 +108,7 @@
 			mainGroup = 76A34C5B29A44DF9007FB644;
 			packageReferences = (
 				76A34C6E29A44E36007FB644 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				76C8969429A703AD000FC2AE /* XCRemoteSwiftPackageReference "swift-tqdm" */,
 			);
 			productRefGroup = 76A34C5B29A44DF9007FB644;
 			projectDirPath = "";
@@ -289,6 +294,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		76C8969429A703AD000FC2AE /* XCRemoteSwiftPackageReference "swift-tqdm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ebraraktas/swift-tqdm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -296,6 +309,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 76A34C6E29A44E36007FB644 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
+		};
+		76C8969529A703AD000FC2AE /* Tqdm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76C8969429A703AD000FC2AE /* XCRemoteSwiftPackageReference "swift-tqdm" */;
+			productName = Tqdm;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

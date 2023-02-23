@@ -7,6 +7,7 @@
 
 import Foundation
 import ArgumentParser
+import Tqdm
 
 enum AlacError: Error {
     case ffmpegNotInstalled
@@ -105,6 +106,9 @@ struct Alac: ParsableCommand {
                     throw AlacError.outsideThreadsRange
                 }
                 
+                print("Converting \(revert ? "alac" : "flac") files to \(revert ? "flacs" : "alacs")...")
+                let progress = Tqdm(total: fileURLs.count, columnCount: 50)
+                
                 // Handle multi-threading
                 if threads > 1 {
                     // Calculate the chunk size and remainder
@@ -130,6 +134,7 @@ struct Alac: ParsableCommand {
                         DispatchQueue.global().async(group: group) {
                             for url in chunk {
                                 try? convert(inputURL: url)
+                                progress.update()
                             }
                         }
 
@@ -144,8 +149,12 @@ struct Alac: ParsableCommand {
                     // Convert all audio files
                     for fileURL in fileURLs {
                         try convert(inputURL: fileURL)
+                        progress.update()
                     }
                 }
+                
+                progress.close()
+                
             } else {
                 // Check if file is an audio file
                 guard inputURL.pathExtension == (revert ? "m4a" : "flac") else {
@@ -153,8 +162,12 @@ struct Alac: ParsableCommand {
                 }
                 
                 // Convert audio file
+                print("Converting \(revert ? "alac" : "flac") file to \(revert ? "flac" : "alac")...")
                 try convert(inputURL: inputURL)
             }
+        
+            print("Done!")
+            
         } catch let error as AlacError {
             print("Error: \(error.localizedDescription)")
         } catch {
@@ -178,9 +191,13 @@ struct Alac: ParsableCommand {
         process.executableURL = ffmpegURL
         let arguments = ["-nostdin", "-i", inputURL.path, "-c:v", "copy", "-c:a", revert ? "flac" : "alac", outputURL.path]
         process.arguments = arguments
+        
+        // Hide ffmpeg output
+        let nullDevice = FileHandle.nullDevice
+        process.standardOutput = nullDevice
+        process.standardError = nullDevice
 
         // Run the command and wait for it to finish
-        print("Converting \(inputURL.path) to" + (revert ? " FLAC" : " ALAC") + "...")
         do {
             try process.run()
             process.waitUntilExit()
@@ -194,7 +211,6 @@ struct Alac: ParsableCommand {
         }
         
         // Move input file to trash
-        print("Moving input" + (revert ? " alac" : " flac") + " to trash...")
         do {
             try fileManager.trashItem(at: inputURL, resultingItemURL: nil)
         } catch {
