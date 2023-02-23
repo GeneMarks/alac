@@ -1,10 +1,13 @@
 # alac 🎧
 Swift tool to ease the process of converting audio files to and from Apple's ALAC format via ffmpeg.
 
+https://user-images.githubusercontent.com/68919132/220812283-298bf10c-1546-4ef6-abc8-e01010afbbe7.mp4
+
 ## Features
 - Converts single files or whole folders recursively to flacs/m4as(alacs) using [ffmpeg](https://en.wikipedia.org/wiki/FFmpeg)
 - Keeps embedded tags and album art
 - Multi-threading to simultaneously convert groups of audio files (Useful for large collections)
+- Progress bar with ETA for batch conversions
 - Moves src files to trash after conversion
 
 ## Prerequisites
