@@ -39,3 +39,4 @@ Alac and Flac are both lossless formats. You can convert back and forth without 
 
 ## Credits
 - [ffmpeg](https://en.wikipedia.org/wiki/FFmpeg)
+- [swift-tqdm](https://github.com/ebraraktas/swift-tqdm)
