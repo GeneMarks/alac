@@ -55,7 +55,6 @@ struct Alac: ParsableCommand {
         do {
             let fileManager = FileManager.default
             
-            // Check if inputURL is a valid file/folder
             let inputURL = URL(fileURLWithPath: input)
             guard fileManager.fileExists(atPath: inputURL.path) else {
                 throw AlacError.invalidFileOrFolder
@@ -65,12 +64,10 @@ struct Alac: ParsableCommand {
             fileManager.fileExists(atPath: inputURL.path, isDirectory: &isDirectory)
             
             if !isDirectory.boolValue {
-                // Check if threads option improperly used on a file
                 guard threads == 1 else {
                     throw AlacError.improperThreadsUsage
                 }
                 
-                // Check if recursive flag improperly used on a file
                 guard !recursive else {
                     throw AlacError.improperRecursiveUsage
                 }
@@ -79,29 +76,24 @@ struct Alac: ParsableCommand {
             if isDirectory.boolValue {
                 var fileURLs: [URL] = []
                 
-                // Add all files recursively to array
                 if let enumerator = fileManager.enumerator(at: inputURL, includingPropertiesForKeys: nil) {
                     for case let fileURL as URL in enumerator {
                         fileURLs.append(fileURL)
                     }
                 }
                 
-                // Remove all non-audio files from arr
                 fileURLs = fileURLs.filter { $0.pathExtension == (revert ? "m4a" : "flac") }
                 
-                // Keep only top level files if not recursive
                 if !recursive {
                     fileURLs = fileURLs.filter { fileURL in
                         return fileURL.deletingLastPathComponent() == inputURL
                     }
                 }
                 
-                // Check if arr isn't empty
                 guard !fileURLs.isEmpty else {
                     throw AlacError.noAudioFilesFound(revert ? "m4a" : "flac")
                 }
                 
-                // Check if threads option is a number 1 - 4
                 guard (1...4).contains(threads) else {
                     throw AlacError.outsideThreadsRange
                 }
@@ -109,28 +101,23 @@ struct Alac: ParsableCommand {
                 print("Converting \(revert ? "alac" : "flac") files to \(revert ? "flacs" : "alacs")...")
                 let progress = Tqdm(total: fileURLs.count, columnCount: 50)
                 
-                // Handle multi-threading
+                
                 if threads > 1 {
-                    // Calculate the chunk size and remainder
                     let chunkSize = fileURLs.count / threads
                     let remainder = fileURLs.count % threads
 
-                    // Keep track of the start and end indices of each chunk
                     var startIndex = 0
                     var endIndex = chunkSize
 
                     let group = DispatchGroup()
 
                     for i in 0..<threads {
-                        // Adjust the end index if there is a remainder
                         if i < remainder {
                             endIndex += 1
                         }
 
-                        // Extract the current chunk of file URLs
                         let chunk = Array(fileURLs[startIndex..<endIndex])
 
-                        // Run the conversion process asynchronously on a global queue and add it to the DispatchGroup
                         DispatchQueue.global().async(group: group) {
                             for url in chunk {
                                 try? convert(inputURL: url)
@@ -138,7 +125,6 @@ struct Alac: ParsableCommand {
                             }
                         }
 
-                        // Update the start and end indices for the next chunk
                         startIndex = endIndex
                         endIndex += chunkSize
                     }
@@ -146,7 +132,6 @@ struct Alac: ParsableCommand {
                     group.wait()
 
                 } else {
-                    // Convert all audio files
                     for fileURL in fileURLs {
                         try convert(inputURL: fileURL)
                         progress.update()
@@ -156,12 +141,10 @@ struct Alac: ParsableCommand {
                 progress.close()
                 
             } else {
-                // Check if file is an audio file
                 guard inputURL.pathExtension == (revert ? "m4a" : "flac") else {
                     throw AlacError.invalidFileOrFolder
                 }
                 
-                // Convert audio file
                 print("Converting \(revert ? "alac" : "flac") file to \(revert ? "flac" : "alac")...")
                 try convert(inputURL: inputURL)
             }
@@ -178,7 +161,6 @@ struct Alac: ParsableCommand {
     func convert(inputURL: URL) throws {
         let fileManager = FileManager.default
         
-        // First, check if ffmpeg is installed
         let ffmpegURL = URL(fileURLWithPath: "/opt/homebrew/bin/ffmpeg")
         guard fileManager.fileExists(atPath: ffmpegURL.path), try ffmpegURL.checkResourceIsReachable() else {
             throw AlacError.ffmpegNotInstalled
@@ -186,18 +168,16 @@ struct Alac: ParsableCommand {
         
         let outputURL = inputURL.deletingPathExtension().appendingPathExtension(revert ? "flac" : "m4a")
 
-        // Construct ffmpeg command
         let process = Process()
         process.executableURL = ffmpegURL
+        
         let arguments = ["-nostdin", "-i", inputURL.path, "-c:v", "copy", "-c:a", revert ? "flac" : "alac", outputURL.path]
         process.arguments = arguments
         
-        // Hide ffmpeg output
         let nullDevice = FileHandle.nullDevice
         process.standardOutput = nullDevice
         process.standardError = nullDevice
 
-        // Run the command and wait for it to finish
         do {
             try process.run()
             process.waitUntilExit()
@@ -205,12 +185,10 @@ struct Alac: ParsableCommand {
             print("Failed to run process: \(error)")
         }
 
-        // Check if the conversion was "successful"
         guard process.terminationStatus == 0, fileManager.fileExists(atPath: outputURL.path) else {
             throw AlacError.conversionFailed(revert ? "m4a" : "flac")
         }
         
-        // Move input file to trash
         do {
             try fileManager.trashItem(at: inputURL, resultingItemURL: nil)
         } catch {
