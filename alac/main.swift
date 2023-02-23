@@ -182,7 +182,7 @@ struct Alac: ParsableCommand {
             try process.run()
             process.waitUntilExit()
         } catch {
-            print("Failed to run process: \(error)")
+            print("Failed to run ffmpeg: \(error)")
         }
 
         guard process.terminationStatus == 0, fileManager.fileExists(atPath: outputURL.path) else {
@@ -192,7 +192,7 @@ struct Alac: ParsableCommand {
         do {
             try fileManager.trashItem(at: inputURL, resultingItemURL: nil)
         } catch {
-            print("Failed to move file to trash: \(error.localizedDescription)")
+            print("Failed to move file to trash: \(error)")
         }
     }
 }
