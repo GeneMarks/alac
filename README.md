@@ -11,7 +11,6 @@ https://user-images.githubusercontent.com/68919132/220812283-298bf10c-1546-4ef6-
 - Moves src files to trash after conversion
 
 ## Prerequisites
-- macOS (Developed on macOS 13.2.1)
 - ffmpeg installed via [HomeBrew](https://formulae.brew.sh/formula/ffmpeg#default)
 
 ## Usage
